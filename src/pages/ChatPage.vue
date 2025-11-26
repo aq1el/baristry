@@ -1,0 +1,1 @@
+<template><h2 class="text-2xl font-bold">Chat</h2></template>
