@@ -16,8 +16,8 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { courses } from '../services/mockData';
-import CourseCard from '../components/CourseCard.vue';
+import { courses } from '@/services/mockData';
+import CourseCard from '@/components/CourseCard.vue';
 
 const filter = ref<'all'|'free'|'premium'>('all');
 const filtered = computed(() => {

@@ -24,6 +24,6 @@
 </template>
 
 <script setup lang="ts">
-import type { Course } from '../services/mockData';
+import type { Course } from '@/services/mockData';
 defineProps<{ course: Course }>();
 </script>

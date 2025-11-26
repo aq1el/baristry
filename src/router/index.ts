@@ -1,10 +1,10 @@
-import HomePage from '../pages/HomePage.vue';
-import AboutPage from '../pages/AboutPage.vue';
-import CoursesPage from '../pages/CoursesPage.vue';
-import CourseDetailPage from '../pages/CourseDetailPage.vue';
-import ContactPage from '../pages/ContactPage.vue';
-import LoginPage from '../pages/LoginPage.vue';
-import ChatPage from '../pages/ChatPage.vue';
+import HomePage from '@/pages/HomePage.vue';
+import AboutPage from '@/pages/AboutPage.vue';
+import CoursesPage from '@/pages/CoursesPage.vue';
+import CourseDetailPage from '@/pages/CourseDetailPage.vue';
+import ContactPage from '@/pages/ContactPage.vue';
+import LoginPage from '@/pages/LoginPage.vue';
+import ChatPage from '@/pages/ChatPage.vue';
 
 import { createRouter, createWebHistory } from 'vue-router';
 
