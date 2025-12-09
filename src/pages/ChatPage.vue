@@ -1,9 +1,21 @@
 <template>
   <section class="max-w-2xl mx-auto">
-    <h2 class="text-2xl font-bold mb-4">Chat FAQ</h2>
+    <h2 class="text-2xl font-bold mb-2">Chat FAQ</h2>
     <p class="text-stone-600 mb-4">
-      Tanyakan hal tentang BarisTry (upgrade, kursus gratis, contact, dll). Chat akan disimpan lokal di browser.
+      Klik pertanyaan cepat di bawah atau ketik pertanyaanmu. Chat disimpan lokal di browser.
     </p>
+
+    <!-- FAQ Chips -->
+    <div class="flex flex-wrap gap-2 mb-3">
+      <button
+        v-for="f in FAQ"
+        :key="f.q"
+        class="px-3 py-1 rounded border text-sm hover:bg-stone-100"
+        @click="quickAsk(f.q)"
+      >
+        {{ f.q }}
+      </button>
+    </div>
 
     <div class="border rounded overflow-hidden">
       <!-- Messages -->
@@ -26,8 +38,8 @@
           placeholder="Tulis pertanyaanmu..."
         />
         <button
-          class="px-4 py-2 rounded bg-stone-900 text-white hover:bg-stone-700"
-          :disabled="sending"
+          class="px-4 py-2 rounded bg-stone-900 text-white hover:bg-stone-700 disabled:opacity-60"
+          :disabled="sending || !input.trim()"
         >
           {{ sending ? 'Mengirim...' : 'Kirim' }}
         </button>
@@ -46,7 +58,8 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import ChatMessage from '@/components/ChatMessage.vue';
-import { findAnswer } from '@/services/faq';
+import { FAQ } from '@/services/faq';
+import { chatEngine, type ChatHistoryItem } from '@/services/chatEngine';
 
 type ChatItem = {
   id: string;
@@ -74,12 +87,11 @@ function load(): ChatItem[] {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) return JSON.parse(raw) as ChatItem[];
   } catch {}
-  // pesan awal
   return [
     {
       id: uid(),
       role: 'bot',
-      text: 'Halo! Aku bot FAQ BarisTry. Tanyakan apa saja tentang kursus, premium, atau contact.',
+      text: 'Halo! Aku bot FAQ BarisTry. Klik pertanyaan di atas atau ketik pertanyaanmu.',
       time: formatTime()
     }
   ];
@@ -94,10 +106,9 @@ function save() {
 async function send() {
   const text = input.value.trim();
   if (!text) return;
-
   sending.value = true;
 
-  // push pesan user
+  // user message
   messages.value.push({
     id: uid(),
     role: 'user',
@@ -107,10 +118,12 @@ async function send() {
   save();
   input.value = '';
 
-  // simulasi jeda bot
-  await new Promise(r => setTimeout(r, 300));
+  // simulate delay
+  await new Promise(r => setTimeout(r, 250));
 
-  const answer = findAnswer(text);
+  // get answer via adapter 
+  const history: ChatHistoryItem[] = messages.value.map(m => ({ role: m.role, text: m.text }));
+  const answer = await chatEngine.answer(text, history);
 
   messages.value.push({
     id: uid(),
@@ -119,8 +132,12 @@ async function send() {
     time: formatTime()
   });
   save();
-
   sending.value = false;
+}
+
+function quickAsk(text: string) {
+  input.value = text;
+  void send();
 }
 
 function clearChat() {
@@ -128,7 +145,7 @@ function clearChat() {
     {
       id: uid(),
       role: 'bot',
-      text: 'Chat dibersihkan. Silakan mulai lagi dengan pertanyaanmu.',
+      text: 'Chat dibersihkan. Mulai lagi dengan Klik FAQ atau ketik pertanyaanmu.',
       time: formatTime()
     }
   ];

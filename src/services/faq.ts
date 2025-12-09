@@ -1,7 +1,7 @@
 export type FaqItem = {
   q: string;
   a: string;
-  keywords?: string[]; // bantu pencocokan
+  keywords?: string[];
 };
 
 export const FAQ: FaqItem[] = [
@@ -25,31 +25,25 @@ export const FAQ: FaqItem[] = [
   },
   {
     q: 'Bagaimana cara menghubungi support?',
-    a: 'Gunakan halaman Contact untuk mengirim pesan. Tim kami akan membalas via email.'
+    a: 'Gunakan halaman Contact untuk mengirim pesan. Tim kami akan membalas via email.',
+    keywords: ['contact', 'support', 'bantuan', 'cs']
   }
 ];
 
-/**
- * Pencocokan sederhana:
- * - cocokan string pertanyaan pengguna terhadap q dan keywords
- * - kalau tidak ada yang cocok, kembalikan respons default
- */
+/** Rule-based matching sederhana */
 export function findAnswer(input: string): string {
   const text = input.toLowerCase().trim();
   if (!text) return 'Tulis pertanyaanmu ya 🙂';
 
-  // cocokan langsung ke pertanyaan
   const direct = FAQ.find(item => text.includes(item.q.toLowerCase()));
   if (direct) return direct.a;
 
-  // cocokan ke keywords
   for (const item of FAQ) {
     if (item.keywords?.some(k => text.includes(k.toLowerCase()))) {
       return item.a;
     }
   }
 
-  // heuristik ringan: cari kata kunci umum
   if (text.includes('premium')) return 'Untuk upgrade Premium: login dulu, lalu klik "Upgrade" di Navbar atau di halaman course.';
   if (text.includes('gratis') || text.includes('free')) return 'Ada course gratis. Buka halaman Courses lalu pilih filter "Gratis".';
   if (text.includes('contact') || text.includes('support')) return 'Buka halaman Contact untuk menghubungi tim support kami.';
