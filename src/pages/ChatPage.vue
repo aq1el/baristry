@@ -19,7 +19,7 @@
 
     <div class="border rounded overflow-hidden">
       <!-- Messages -->
-      <div class="h-[50vh] p-4 overflow-y-auto flex flex-col gap-3 bg-white">
+      <div ref="listRef" class="h-[50vh] p-4 overflow-y-auto flex flex-col gap-3 bg-white">
         <ChatMessage
           v-for="m in messages"
           :key="m.id"
@@ -27,6 +27,13 @@
           :isUser="m.role === 'user'"
           :time="m.time"
         />
+        <!-- typing indicator -->
+        <div v-if="typing" class="flex items-center gap-2 text-stone-500 text-sm">
+          <span class="inline-block w-2 h-2 rounded-full bg-stone-300 animate-bounce"></span>
+          <span class="inline-block w-2 h-2 rounded-full bg-stone-300 animate-bounce [animation-delay:.1s]"></span>
+          <span class="inline-block w-2 h-2 rounded-full bg-stone-300 animate-bounce [animation-delay:.2s]"></span>
+          Bot sedang mengetik...
+        </div>
       </div>
 
       <!-- Input -->
@@ -56,7 +63,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, nextTick } from 'vue';
 import ChatMessage from '@/components/ChatMessage.vue';
 import { FAQ } from '@/services/faq';
 import { chatEngine, type ChatHistoryItem } from '@/services/chatEngine';
@@ -73,6 +80,15 @@ const STORAGE_KEY = 'baristry_chat_v1';
 const messages = ref<ChatItem[]>(load());
 const input = ref('');
 const sending = ref(false);
+const typing = ref(false);
+const listRef = ref<HTMLDivElement | null>(null);
+
+function scrollToBottom() {
+  nextTick(() => {
+    const el = listRef.value;
+    if (el) el.scrollTop = el.scrollHeight;
+  });
+}
 
 function formatTime(date = new Date()) {
   return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -117,11 +133,13 @@ async function send() {
   });
   save();
   input.value = '';
+  scrollToBottom();
 
-  // simulate delay
-  await new Promise(r => setTimeout(r, 250));
+  // simulate delay + show typing
+  typing.value = true;
+  await new Promise(r => setTimeout(r, 350));
 
-  // get answer via adapter 
+  // get answer via adapter
   const history: ChatHistoryItem[] = messages.value.map(m => ({ role: m.role, text: m.text }));
   const answer = await chatEngine.answer(text, history);
 
@@ -132,7 +150,9 @@ async function send() {
     time: formatTime()
   });
   save();
+  typing.value = false;
   sending.value = false;
+  scrollToBottom();
 }
 
 function quickAsk(text: string) {
@@ -150,5 +170,6 @@ function clearChat() {
     }
   ];
   save();
+  scrollToBottom();
 }
 </script>

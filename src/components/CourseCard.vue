@@ -1,19 +1,22 @@
 <template>
-  <article class="border rounded p-4 bg-white shadow-sm flex flex-col gap-2">
-    <h3 class="font-semibold text-lg">
-      {{ course.title }}
+  <article class="border rounded-lg p-4 bg-white shadow-sm flex flex-col gap-2">
+    <img :src="course.image" alt="" class="rounded mb-2 h-36 object-cover" />
+    <div class="flex items-center justify-between">
+      <h3 class="font-semibold text-lg">{{ course.title }}</h3>
       <span
-        class="ml-2 text-xs px-2 py-1 rounded"
+        class="text-xs px-2 py-1 rounded"
         :class="course.isPremium ? 'bg-amber-200 text-amber-900' : 'bg-green-200 text-green-900'"
       >
-        {{ course.isPremium ? 'Premium' : 'Free' }}
+        {{ course.isPremium ? 'Premium' : 'Gratis' }}
       </span>
-    </h3>
-    <p class="text-sm text-stone-600">{{ course.shortDesc }}</p>
-    <div class="text-xs flex justify-between">
-      <span class="uppercase tracking-wide">{{ course.level }}</span>
-      <span class="capitalize">{{ course.category.replace('_',' ') }}</span>
     </div>
+    <p class="text-sm text-stone-600">{{ course.shortDesc }}</p>
+
+    <div class="flex items-center gap-2 text-xs text-stone-600">
+      <span class="px-2 py-0.5 rounded bg-stone-100 uppercase tracking-wide">{{ course.level }}</span>
+      <span class="px-2 py-0.5 rounded bg-stone-100 capitalize">{{ course.category.replace('_',' ') }}</span>
+    </div>
+
     <router-link
       :to="`/courses/${course.id}`"
       class="inline-block mt-2 px-3 py-2 bg-stone-900 text-white text-sm rounded hover:bg-stone-700"

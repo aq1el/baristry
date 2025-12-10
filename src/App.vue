@@ -5,10 +5,12 @@
       <router-view />
     </main>
     <BaseFooter />
+    <AuthModal />
   </div>
 </template>
 
 <script setup lang="ts">
 import BaseNavbar from '@/components/BaseNavbar.vue';
 import BaseFooter from '@/components/BaseFooter.vue';
+import AuthModal from '@/components/AuthModal.vue';
 </script>

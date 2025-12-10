@@ -1,51 +1,39 @@
-export interface Course {
+export type Course = {
   id: string;
   title: string;
-  level: 'basic' | 'intermediate' | 'advanced';
-  isPremium: boolean;
   shortDesc: string;
-  category: 'espresso' | 'latte_art' | 'roasting' | 'business';
-}
+  image: string;
+  level: 'beginner' | 'intermediate' | 'advanced';
+  category: 'espresso' | 'brew' | 'latte_art' | 'pro';
+  isPremium: boolean;
+};
 
 export const courses: Course[] = [
   {
-    id: 'espresso-dasar',
-    title: 'Dasar Espresso',
-    level: 'basic',
-    isPremium: false,
-    shortDesc: 'Memahami ekstraksi espresso, rasio, dan grind size.',
-    category: 'espresso'
+    id: 'espresso-basics',
+    title: 'Dasar-Dasar Barista',
+    shortDesc: 'Mulai dari ekstraksi espresso dan alat dasar.',
+    image: '/images/program1.jpg',
+    level: 'beginner',
+    category: 'espresso',
+    isPremium: false
   },
   {
-    id: 'latte-art-dasar',
-    title: 'Latte Art Dasar',
-    level: 'basic',
-    isPremium: false,
-    shortDesc: 'Belajar microfoam dan pola sederhana.',
-    category: 'latte_art'
-  },
-  {
-    id: 'latte-art-lanjutan',
-    title: 'Latte Art Lanjutan',
+    id: 'latte-art',
+    title: 'Espresso & Latte Art',
+    shortDesc: 'Kuasai microfoam dan teknik latte art.',
+    image: '/images/program2.jpg',
     level: 'intermediate',
-    isPremium: true,
-    shortDesc: 'Pola rosetta & tulip kompleks.',
-    category: 'latte_art'
+    category: 'latte_art',
+    isPremium: false
   },
   {
-    id: 'roasting-pemula',
-    title: 'Roasting Pemula',
-    level: 'intermediate',
-    isPremium: true,
-    shortDesc: 'Tahapan roasting light ke medium.',
-    category: 'roasting'
-  },
-  {
-    id: 'manajemen-kedai',
-    title: 'Manajemen Kedai Kopi',
+    id: 'pro-barista',
+    title: 'Barista Profesional',
+    shortDesc: 'Materi lanjutan untuk dunia kerja.',
+    image: '/images/program3.jpg',
     level: 'advanced',
-    isPremium: true,
-    shortDesc: 'Inventori, workflow bar & pelayanan.',
-    category: 'business'
+    category: 'pro',
+    isPremium: true
   }
 ];
