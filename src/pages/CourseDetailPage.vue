@@ -74,6 +74,7 @@
           </router-link>
         </div>
       </div>
+    </div>
   </section>
   <section v-else class="container mx-auto px-4 py-10">
     <p>Course tidak ditemukan.</p>
