@@ -1,5 +1,5 @@
 <template>
-  <BaseHero image="/images/hero-coffee.jpg" />
+  <BaseHero image="/images/programs/pro-barista.jpg" />
   <FeatureCards :items="features" />
   <ProgramCards :programs="programs" />
   <Testimonials :items="testimonials" />
@@ -20,14 +20,14 @@ const features = [
 ];
 
 const programs = [
-  { title: 'Dasar-Dasar Barista', desc: 'Mulai dari teknik dasar espresso.', image: '/images/program1.jpg', to: '/courses', isPremium: false },
-  { title: 'Espresso & Latte Art', desc: 'Kuasai microfoam dan latte art.', image: '/images/program2.jpg', to: '/courses', isPremium: false },
-  { title: 'Barista Profesional', desc: 'Materi lanjutan untuk dunia kerja.', image: '/images/program3.jpg', to: '/courses', isPremium: true }
+  { title: 'Dasar-Dasar Barista', desc: 'Mulai dari teknik dasar espresso.', image: '/images/programs/espresso-basics.jpg', to: '/courses', isPremium: false },
+  { title: 'Espresso & Latte Art', desc: 'Kuasai microfoam dan latte art.', image: '/images/programs/latte-art.jpg', to: '/courses', isPremium: false },
+  { title: 'Barista Profesional', desc: 'Materi lanjutan untuk dunia kerja.', image: '/images/programs/pro-barista.jpg', to: '/courses', isPremium: true }
 ];
 
 const testimonials = [
-  { name: 'Andi', role: 'Barista', text: 'Materinya lengkap dan mudah diikuti.', avatar: '/images/avatar1.jpg' },
-  { name: 'Sari', role: 'Coffee Enthusiast', text: 'Latte art saya naik level!', avatar: '/images/avatar2.jpg' },
-  { name: 'Budi', role: 'Owner Coffee Shop', text: 'Tim saya jadi lebih kompeten.', avatar: '/images/avatar3.jpg' }
+  { name: 'Zeke ft', role: 'Barista', text: 'Materinya lengkap dan mudah diikuti.', avatar: '/images/avatar/avatar1.jpg' },
+  { name: 'Jaki S.Love', role: 'Coffee Enthusiast', text: 'Latte art saya naik level!', avatar: '/images/avatar/avatar2.jpg' },
+  { name: 'Agung Gihon', role: 'Owner Coffee Shop', text: 'Tim saya jadi lebih kompeten.', avatar: '/images/avatar/avatar3.jpg' }
 ];
 </script>

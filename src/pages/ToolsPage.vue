@@ -13,9 +13,9 @@
 <script setup lang="ts">
 import GuideCard from '@/components/GuideCard.vue';
 const tools = [
-  { title: 'Espresso Machine', desc: 'Mesin inti untuk ekstraksi espresso.', image: '/images/tool-espresso.jpg', cta: 'Lihat Detail', to: '/courses/espresso-basics' },
-  { title: 'Grinder', desc: 'Penggiling biji kopi presisi.', image: '/images/tool-grinder.jpg', cta: 'Lihat Detail', to: '/courses/espresso-basics' },
-  { title: 'Tamper', desc: 'Memadatkan kopi di portafilter.', image: '/images/tool-tamper.jpg', cta: 'Lihat Detail', to: '/courses/espresso-basics' },
-  { title: 'Milk Pitcher', desc: 'Wadah frothing susu.', image: '/images/tool-pitcher.jpg', cta: 'Lihat Detail', to: '/courses/latte-art' }
+  { title: 'Espresso Machine', desc: 'Mesin inti untuk ekstraksi espresso.', image: '/images/tools/tool-espresso-machine.jpg', cta: 'Lihat Detail', to: '/courses/espresso-basics' },
+  { title: 'Grinder', desc: 'Penggiling biji kopi presisi.', image: '/images/tools/tool-grinder.jpg', cta: 'Lihat Detail', to: '/courses/espresso-basics' },
+  { title: 'Tamper', desc: 'Memadatkan kopi di portafilter.', image: '/images/tools/tool-tamper.jpg', cta: 'Lihat Detail', to: '/courses/espresso-basics' },
+  { title: 'Milk Pitcher', desc: 'Wadah frothing susu.', image: '/images/tools/tool-milk-pitcher.jpg', cta: 'Lihat Detail', to: '/courses/latte-art' }
 ];
 </script>

@@ -29,7 +29,7 @@
         </div>
       </div>
       <div class="rounded overflow-hidden shadow-lg">
-        <img :src="image" alt="Hero" class="w-full h-full object-cover" />
+        <img :src="image" alt="Hero" loading="lazy" class="w-full h-full object-cover" />
       </div>
     </div>
   </section>

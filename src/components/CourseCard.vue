@@ -1,6 +1,6 @@
 <template>
   <article class="border rounded-lg p-4 bg-white shadow-sm flex flex-col gap-2">
-    <img :src="course.image" alt="" class="rounded mb-2 h-36 object-cover" />
+    <img :src="course.image" alt="" loading="lazy" class="rounded mb-2 h-36 object-cover" />
     <div class="flex items-center justify-between">
       <h3 class="font-semibold text-lg">{{ course.title }}</h3>
       <span

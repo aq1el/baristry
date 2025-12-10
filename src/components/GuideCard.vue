@@ -1,6 +1,6 @@
 <template>
   <article class="bg-[#D9E087] rounded-xl p-4 shadow-md flex gap-4 items-start">
-    <img :src="image" alt="" class="w-16 h-16 rounded-full object-cover" />
+    <img :src="image" alt="" loading="lazy" class="w-16 h-16 rounded-full object-cover" />
     <div class="flex-1">
       <h3 class="font-semibold mb-1">{{ title }}</h3>
       <p class="text-stone-700 text-sm mb-3">{{ desc }}</p>
@@ -31,6 +31,7 @@ defineProps<{
   desc: string;
   image: string;
   cta: string;
-  to?: string;
+  to?: string | Record<string, any>;
 }>();
 </script>
+

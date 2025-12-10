@@ -13,7 +13,7 @@ export const courses: Course[] = [
     id: 'espresso-basics',
     title: 'Dasar-Dasar Barista',
     shortDesc: 'Mulai dari ekstraksi espresso dan alat dasar.',
-    image: '/images/program1.jpg',
+    image: '/images/programs/espresso-basics.jpg',
     level: 'beginner',
     category: 'espresso',
     isPremium: false
@@ -22,7 +22,7 @@ export const courses: Course[] = [
     id: 'latte-art',
     title: 'Espresso & Latte Art',
     shortDesc: 'Kuasai microfoam dan teknik latte art.',
-    image: '/images/program2.jpg',
+    image: '/images/programs/latte-art.jpg',
     level: 'intermediate',
     category: 'latte_art',
     isPremium: false
@@ -31,7 +31,7 @@ export const courses: Course[] = [
     id: 'pro-barista',
     title: 'Barista Profesional',
     shortDesc: 'Materi lanjutan untuk dunia kerja.',
-    image: '/images/program3.jpg',
+    image: '/images/programs/pro-barista.jpg',
     level: 'advanced',
     category: 'pro',
     isPremium: true

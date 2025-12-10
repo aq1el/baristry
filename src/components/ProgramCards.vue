@@ -4,7 +4,7 @@
     <p class="text-stone-600 text-center mb-6">Pilih program yang sesuai dengan tujuanmu: dari basic hingga pro.</p>
     <div class="grid md:grid-cols-3 gap-4">
       <article v-for="p in programs" :key="p.title" class="bg-white border rounded-lg p-4 shadow-sm flex flex-col">
-        <img :src="p.image" alt="" class="rounded mb-3 h-36 object-cover" />
+        <img :src="p.image" alt="" loading="lazy" class="rounded mb-3 h-36 object-cover" />
         <div class="flex-1">
           <h3 class="font-semibold mb-1">
             {{ p.title }}

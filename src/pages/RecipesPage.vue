@@ -13,9 +13,9 @@
 <script setup lang="ts">
 import GuideCard from '@/components/GuideCard.vue';
 const recipes = [
-  { title: 'Cafe Latte', desc: 'Espresso + susu panas ber-foam tipis.', image: '/images/recipe-latte.jpg', cta: 'Lihat Resep', to: '/courses/latte-art' },
-  { title: 'Cappuccino', desc: 'Tekstur foam lebih tebal dan creamy.', image: '/images/recipe-cappuccino.jpg', cta: 'Lihat Resep', to: '/courses/latte-art' },
-  { title: 'Filter Coffee (V60)', desc: 'Rasa bersih, ringan, dan aromatik.', image: '/images/recipe-v60.jpg', cta: 'Lihat Resep', to: '/courses/espresso-basics' },
-  { title: 'Macchiato', desc: 'Espresso + sedikit susu/foam.', image: '/images/recipe-macchiato.jpg', cta: 'Lihat Resep', to: '/courses/pro-barista' }
+  { title: 'Cafe Latte', desc: 'Espresso + susu panas ber-foam tipis.', image: '/images/recipes/recipe-latte.jpg', cta: 'Lihat Resep', to: '/courses/latte-art' },
+  { title: 'Cappuccino', desc: 'Tekstur foam lebih tebal dan creamy.', image: '/images/recipes/recipe-cappuccino.jpg', cta: 'Lihat Resep', to: '/courses/latte-art' },
+  { title: 'Filter Coffee (V60)', desc: 'Rasa bersih, ringan, dan aromatik.', image: '/images/recipes/recipe-v60.jpg', cta: 'Lihat Resep', to: '/courses/espresso-basics' },
+  { title: 'Macchiato', desc: 'Espresso + sedikit susu/foam.', image: '/images/recipes/recipe-macchiato.jpg', cta: 'Lihat Resep', to: '/courses/pro-barista' }
 ];
 </script>

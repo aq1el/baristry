@@ -1,0 +1,102 @@
+{
+  "guides": {
+    "milk_frothing": {
+      "title": "Milk Frothing (Penguapan Susu)",
+      "objective": "Menghasilkan tekstur microfoam yang halus untuk latte dan cappuccino.",
+      "equipment": [
+        "Mesin espresso dengan steam wand",
+        "Pitcher stainless steel",
+        "Termometer (opsional)",
+        "Susu segar dingin"
+      ],
+      "steps": [
+        "Isi pitcher dengan susu dingin hingga 1/3 volume.",
+        "Nyalakan steam wand sebentar untuk membuang air.",
+        "Posisikan ujung steam wand sedikit di bawah permukaan susu.",
+        "Buka uap untuk memasukkan udara hingga suhu ±40°C.",
+        "Masukkan steam wand lebih dalam untuk memanaskan tanpa menambah busa.",
+        "Panaskan hingga suhu 60–65°C.",
+        "Matikan steam, lap steam wand, lalu buang uap kembali.",
+        "Putar (swirl) pitcher agar busa menyatu dengan susu."
+      ],
+      "common_mistakes": [
+        "Susu terlalu panas hingga gosong",
+        "Busa terlalu tebal (bukan microfoam)",
+        "Steam wand tidak dibersihkan"
+      ],
+      "ideal_temperature_celsius": 60
+    },
+
+    "tamping": {
+      "title": "Tamping",
+      "objective": "Memadatkan bubuk kopi secara merata agar ekstraksi seimbang.",
+      "equipment": [
+        "Portafilter",
+        "Tamper",
+        "Timbangan kopi"
+      ],
+      "steps": [
+        "Masukkan bubuk kopi ke dalam portafilter.",
+        "Ratakan permukaan kopi dengan jari atau distributor.",
+        "Pegang tamper lurus (90 derajat).",
+        "Tekan dengan tekanan stabil sekitar 15–20 kg.",
+        "Pastikan permukaan kopi rata dan padat."
+      ],
+      "common_mistakes": [
+        "Tekanan tidak merata",
+        "Posisi tamper miring",
+        "Tekanan terlalu lemah atau terlalu kuat"
+      ],
+      "recommended_pressure_kg": 15
+    },
+
+    "gramasi": {
+      "title": "Gramasi Kopi",
+      "objective": "Menentukan takaran kopi dan hasil seduhan yang konsisten.",
+      "standard_dose": {
+        "single_shot_grams": "8-15",
+        "double_shot_grams": "16-30",
+        "output_single_ml": "16-30",
+        "output_double_ml": "32-60"
+      },
+      "brew_ratio": "1:2",
+      "examples": [
+        {
+          "input_grams": 18,
+          "output_ml": 36
+        },
+        {
+          "input_grams": 20,
+          "output_ml": 40
+        }
+      ],
+      "tips": [
+        "Gunakan timbangan digital untuk akurasi",
+        "Sesuaikan gramasi dengan jenis biji kopi",
+        "Perhatikan waktu ekstraksi ideal 25–30 detik"
+      ]
+    },
+
+    "cleaning_equipment": {
+      "title": "Pembersihan Peralatan",
+      "objective": "Menjaga kualitas rasa kopi dan umur mesin.",
+      "daily_cleaning": [
+        "Bersihkan portafilter setelah setiap penggunaan",
+        "Flush group head sebelum dan sesudah ekstraksi",
+        "Lap steam wand setiap selesai frothing"
+      ],
+      "weekly_cleaning": [
+        "Backflush mesin dengan air",
+        "Rendam portafilter dalam air hangat"
+      ],
+      "monthly_cleaning": [
+        "Backflush dengan cairan khusus pembersih mesin",
+        "Bersihkan grinder dari sisa minyak kopi"
+      ],
+      "warnings": [
+        "Jangan merendam bagian elektrik",
+        "Gunakan cairan pembersih khusus mesin kopi"
+      ]
+    }
+  }
+}
