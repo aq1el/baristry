@@ -1,10 +1,5 @@
 export type CoffeeGuides = {
-  guides: {
-    milk_frothing: GuideEntry;
-    tamping: GuideEntry;
-    gramasi: GuideEntry;
-    cleaning_equipment: GuideEntry;
-  };
+  guides: Record<string, GuideEntry>;
 };
 
 export type GuideEntry = {
@@ -30,41 +25,9 @@ export type GuideEntry = {
   warnings?: string[];
 };
 
-// Import JSON sebagai modul (Vite/TS mendukung import JSON)
 import raw from '@/assets/content/guides.json';
+export const guidesData = raw as CoffeeGuides;
 
-const data = raw as CoffeeGuides;
-
-// Pemetaan ke array display dan link ke course terkait (opsional)
-export const guideList = [
-  {
-    key: 'milk_frothing',
-    image: '/images/guide/guide-milk-frothing.jpg',
-    cta: 'Belajar Sekarang',
-    to: { name: 'course-detail', params: { id: 'latte-art' } },
-    detail: data.guides.milk_frothing
-  },
-  {
-    key: 'gramasi',
-    image: '/images/guide/gramasi.jpg',
-    cta: 'Belajar Sekarang',
-    to: { name: 'course-detail', params: { id: 'espresso-basics' } },
-    detail: data.guides.gramasi
-  },
-  {
-    key: 'tamping',
-    image: '/images/guide/tamping.jpg',
-    cta: 'Belajar Sekarang',
-    to: { name: 'course-detail', params: { id: 'espresso-basics' } },
-    detail: data.guides.tamping
-  },
-  {
-    key: 'cleaning_equipment',
-    image: '/images/guide/cleaning-equipment.jpg',
-    cta: 'Belajar Sekarang',
-    to: { name: 'course-detail', params: { id: 'pro-barista' } },
-    detail: data.guides.cleaning_equipment
-  }
-] as const;
-
-export type GuideItem = (typeof guideList)[number];
+export function getGuide(key: string): GuideEntry | null {
+  return (guidesData.guides[key] ?? null) as GuideEntry | null;
+}

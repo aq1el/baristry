@@ -12,45 +12,68 @@
           <span class="px-2 py-0.5 rounded bg-stone-100">Durasi: ~3 jam</span>
         </div>
 
-        <h2 class="text-xl font-semibold mb-2">Outline Materi</h2>
-        <ul class="list-disc pl-5 space-y-1 text-stone-700 mb-6">
-          <li>Pengenalan alat dan keselamatan kerja</li>
-          <li>Dasar ekstraksi espresso (rasio, grind size, waktu)</li>
-          <li>Teknik steaming dan microfoam</li>
-          <li>Latte art dasar: heart, tulip</li>
-          <li>Perawatan mesin dan kebersihan</li>
-        </ul>
+    <div v-if="course.lessons?.length" class="mt-8">
+      <h2 class="text-xl font-semibold mb-3">Modul yang Dipelajari</h2>
+      <div class="space-y-4">
+        <div
+          v-for="ls in course.lessons"
+          :key="ls.key"
+          class="border rounded-lg p-4 bg-white shadow-sm"
+        >
+          <div class="flex items-center justify-between mb-1">
+            <h3 class="font-semibold">{{ ls.title }}</h3>
+            <router-link
+              :to="{ name: 'guide-detail', params: { key: ls.key } }"
+              class="text-sm underline text-blue-600"
+            >
+              Lihat detail
+            </router-link>
+          </div>
+          <p v-if="guide(ls.key)?.objective" class="text-stone-700 text-sm">
+            {{ guide(ls.key)?.objective }}
+          </p>
 
-        <div class="flex gap-3">
-          <button class="px-4 py-2 rounded bg-stone-900 text-white hover:bg-stone-700">Mulai</button>
-          <router-link to="/courses" class="px-4 py-2 rounded border hover:bg-stone-100">Kembali</router-link>
-        </div>
-      </div>
-
-      <aside class="bg-white border rounded-lg p-4 shadow-sm">
-        <div class="flex items-center justify-between mb-2">
-          <span class="text-sm text-stone-600">Akses</span>
-          <span
-            class="text-xs px-2 py-1 rounded"
-            :class="course.isPremium ? 'bg-amber-200 text-amber-900' : 'bg-green-200 text-green-900'"
-          >
-            {{ course.isPremium ? 'Premium' : 'Gratis' }}
-          </span>
-        </div>
-        <p class="text-stone-700 text-sm mb-4">
-          {{ course.isPremium
-            ? 'Kursus ini memerlukan akun Premium untuk mengakses materi penuh.'
-            : 'Kursus ini gratis. Kamu bisa mulai belajar sekarang.' }}
-        </p>
-        <div v-if="needGate" class="bg-stone-50 border rounded p-3">
-          <p class="text-sm mb-2">Akses dibatasi. Silakan login atau upgrade Premium.</p>
-          <div class="flex gap-2">
-            <button class="px-3 py-2 rounded border hover:bg-stone-100" @click="goLogin">Login</button>
-            <button class="px-3 py-2 rounded bg-amber-600 text-white hover:bg-amber-700" @click="upgrade">Upgrade</button>
+          <div class="mt-2 grid md:grid-cols-2 gap-4">
+            <div v-if="guide(ls.key)?.steps?.length">
+              <h4 class="font-medium text-sm mb-1">Langkah inti</h4>
+              <ol class="list-decimal pl-5 text-sm text-stone-700 space-y-1">
+                <li v-for="(s,i) in (guide(ls.key)?.steps || []).slice(0,4)" :key="i">{{ s }}</li>
+              </ol>
+            </div>
+            <div v-if="guide(ls.key)?.equipment?.length">
+              <h4 class="font-medium text-sm mb-1">Peralatan</h4>
+              <ul class="list-disc pl-5 text-sm text-stone-700">
+                <li v-for="it in (guide(ls.key)?.equipment || [])" :key="it">{{ it }}</li>
+              </ul>
+            </div>
           </div>
         </div>
-      </aside>
+      </div>
     </div>
+      </div>
+      <div class="md:col-span-1">
+        <div class="border rounded-lg p-6 bg-white shadow-md sticky top-20">
+          <div class="mb-4">
+            <span class="text-2xl font-bold text-green-600" v-if="course.isPremium">Premium Course</span>
+            <span class="text-2xl font-bold text-stone-800" v-else>Free Course</span>
+          </div>
+          <button
+            v-if="needGate"
+            @click="course.isPremium ? upgrade() : goLogin()"
+            class="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition"
+          >
+            {{ course.isPremium ? (auth.isLoggedIn ? 'Upgrade to Premium' : 'Login to Upgrade') : 'Start Course' }}
+          </button>
+          <router-link
+            v-else
+            v-if="course.lessons?.length"
+            :to="{ name: 'guide-detail', params: { key: course.lessons[0].key } }"
+            class="w-full block text-center bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700 transition"
+          >
+            Mulai Course
+          </router-link>
+        </div>
+      </div>
   </section>
   <section v-else class="container mx-auto px-4 py-10">
     <p>Course tidak ditemukan.</p>
@@ -64,6 +87,7 @@ import { useRoute } from 'vue-router';
 import { courses } from '@/services/mockData';
 import { useAuthStore } from '@/stores/auth';
 import { useUiStore } from '@/stores/ui';
+import { getGuide as guide } from '@/content/guides';
 
 const route = useRoute();
 const auth = useAuthStore();

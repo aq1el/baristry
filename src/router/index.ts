@@ -8,6 +8,7 @@ import CoursesPage from '@/pages/CoursesPage.vue';
 import CourseDetailPage from '@/pages/CourseDetailPage.vue';
 import ContactPage from '@/pages/ContactPage.vue';
 import ChatPage from '@/pages/ChatPage.vue';
+import GuideDetailPage from '@/pages/GuideDetailPage.vue';
 // … import halaman lain yang sudah ada
 
 export default createRouter({
@@ -21,7 +22,8 @@ export default createRouter({
     { path: '/courses', name: 'courses', component: CoursesPage },
     { path: '/courses/:id', name: 'course-detail', component: CourseDetailPage, props: true },
     { path: '/contact', name: 'contact', component: ContactPage },
-    { path: '/chat', name: 'chat', component: ChatPage }
+    { path: '/chat', name: 'chat', component: ChatPage },
+    { path: '/guide/:key', name: 'guide-detail', component: GuideDetailPage }
     // … existing: courses, course-detail, chat, contact, login
   ]
 });
