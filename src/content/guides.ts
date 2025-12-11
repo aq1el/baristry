@@ -31,3 +31,34 @@ export const guidesData = raw as CoffeeGuides;
 export function getGuide(key: string): GuideEntry | null {
   return (guidesData.guides[key] ?? null) as GuideEntry | null;
 }
+
+export const guideList = [
+  {
+    key: 'milk_frothing',
+    image: '/images/guide/guide-milk-frothing.jpg',
+    cta: 'Belajar Sekarang',
+    to: { name: 'course-detail', params: { id: 'latte-art' } },
+    detail: guidesData.guides.milk_frothing
+  },
+  {
+    key: 'gramasi',
+    image: '/images/guide/guide-gramasi.jpg',
+    cta: 'Belajar Sekarang',
+    to: { name: 'course-detail', params: { id: 'espresso-basics' } },
+    detail: guidesData.guides.gramasi
+  },
+  {
+    key: 'tamping',
+    image: '/images/guide/guide-tamping.jpg',
+    cta: 'Belajar Sekarang',
+    to: { name: 'course-detail', params: { id: 'espresso-basics' } },
+    detail: guidesData.guides.tamping
+  },
+  {
+    key: 'cleaning_equipment',
+    image: '/images/guide/guide-cleaning-equipment.jpg',
+    cta: 'Belajar Sekarang',
+    to: { name: 'course-detail', params: { id: 'pro-barista' } },
+    detail: guidesData.guides.cleaning_equipment
+  }
+] as const;

@@ -21,7 +21,7 @@
 
 <script setup lang="ts">
 import GuideCard from '@/components/GuideCard.vue';
-import { getGuide as guide } from '@/content/guides';
+import { guideList as guides } from '@/content/guides';
 </script>
 
 
