@@ -56,7 +56,7 @@ export const guideList = [
   },
   {
     key: 'cleaning_equipment',
-    image: '/images/guide/guide-cleaning-equipment.jpg',
+    image: '/images/guide/guide-cleaning.jpg',
     cta: 'Belajar Sekarang',
     to: { name: 'course-detail', params: { id: 'pro-barista' } },
     detail: guidesData.guides.cleaning_equipment

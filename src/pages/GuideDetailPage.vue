@@ -74,7 +74,7 @@
     </div>
 
     <div class="mt-6">
-      <router-link to="/guide" class="px-4 py-2 rounded border hover:bg-stone-100">Kembali</router-link>
+      <router-link to="/courses" class="px-4 py-2 rounded border hover:bg-stone-100">Kembali</router-link>
     </div>
   </section>
 
