@@ -11,7 +11,7 @@
         :to="to"
         class="px-3 py-1 rounded-full bg-stone-900 text-white text-sm hover:bg-stone-700 inline-block"
       >
-        {{ cta }}
+        {{ cta ?? 'Lihat' }}
       </router-link>
 
       <button
@@ -19,7 +19,7 @@
         type="button"
         class="px-3 py-1 rounded-full bg-stone-900 text-white text-sm hover:bg-stone-700 inline-block"
       >
-        {{ cta }}
+        {{ cta ?? 'Lihat' }}
       </button>
     </div>
   </article>
@@ -30,8 +30,7 @@ defineProps<{
   title: string;
   desc: string;
   image: string;
-  cta: string;
+  cta?: string;
   to?: string | Record<string, any>;
 }>();
-</script>
-
+</script>A

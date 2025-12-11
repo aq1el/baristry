@@ -4,7 +4,7 @@
       <h2 class="text-2xl font-bold mb-2">Resep dengan Rasa yang Mendunia</h2>
       <p class="text-stone-700 mb-6">Ikuti resep-resep ini untuk memulai journey barista kamu.</p>
       <div class="grid md:grid-cols-2 gap-4">
-        <GuideCard v-for="r in recipes" :key="r.title" v-bind="r" />
+        <GuideCard v-for="r in recipes" :key="r.id" v-bind="r" />
       </div>
     </div>
   </section>
@@ -12,10 +12,5 @@
 
 <script setup lang="ts">
 import GuideCard from '@/components/GuideCard.vue';
-const recipes = [
-  { title: 'Cafe Latte', desc: 'Espresso + susu panas ber-foam tipis.', image: '/images/recipes/recipe-latte.jpg', cta: 'Lihat Resep', to: '/courses/latte-art' },
-  { title: 'Cappuccino', desc: 'Tekstur foam lebih tebal dan creamy.', image: '/images/recipes/recipe-cappuccino.jpg', cta: 'Lihat Resep', to: '/courses/latte-art' },
-  { title: 'Filter Coffee (V60)', desc: 'Rasa bersih, ringan, dan aromatik.', image: '/images/recipes/recipe-v60.jpg', cta: 'Lihat Resep', to: '/courses/espresso-basics' },
-  { title: 'Macchiato', desc: 'Espresso + sedikit susu/foam.', image: '/images/recipes/recipe-macchiato.jpg', cta: 'Lihat Resep', to: '/courses/pro-barista' }
-];
+import { recipeList as recipes } from '@/content/recipes';
 </script>

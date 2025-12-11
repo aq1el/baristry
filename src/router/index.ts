@@ -9,7 +9,7 @@ import CourseDetailPage from '@/pages/CourseDetailPage.vue';
 import ContactPage from '@/pages/ContactPage.vue';
 import ChatPage from '@/pages/ChatPage.vue';
 import GuideDetailPage from '@/pages/GuideDetailPage.vue';
-// … import halaman lain yang sudah ada
+import RecipeDetailPage from '@/pages/RecipeDetailPage.vue'; // <-- added
 
 export default createRouter({
   history: createWebHistory(),
@@ -18,12 +18,12 @@ export default createRouter({
     { path: '/about', name: 'about', component: AboutPage },
     { path: '/guide', name: 'guide', component: GuidePage },
     { path: '/recipes', name: 'recipes', component: RecipesPage },
+    { path: '/recipes/:id', name: 'recipe-detail', component: RecipeDetailPage }, // <-- added
     { path: '/tools', name: 'tools', component: ToolsPage },
     { path: '/courses', name: 'courses', component: CoursesPage },
     { path: '/courses/:id', name: 'course-detail', component: CourseDetailPage, props: true },
     { path: '/contact', name: 'contact', component: ContactPage },
     { path: '/chat', name: 'chat', component: ChatPage },
     { path: '/guide/:key', name: 'guide-detail', component: GuideDetailPage }
-    // … existing: courses, course-detail, chat, contact, login
   ]
 });
