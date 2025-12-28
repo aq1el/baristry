@@ -1,49 +1,73 @@
 import { defineStore } from 'pinia';
-
-type User = {
-  name: string;
-  isPremium: boolean;
-};
+import { supabase } from '@/lib/supabase';
+import type { Session, User } from '@supabase/supabase-js';
 
 type AuthState = {
+  session: Session | null;
   user: User | null;
+  hydrated: boolean;
 };
 
-const STORAGE_KEY = 'baristry_auth_v1';
-
-function loadState(): AuthState {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) return JSON.parse(raw) as AuthState;
-  } catch {}
-  return { user: null };
-}
-
-function saveState(state: AuthState) {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-  } catch {}
-}
-
 export const useAuthStore = defineStore('auth', {
-  state: (): AuthState => loadState(),
+  state: (): AuthState => ({
+    session: null,
+    user: null,
+    hydrated: false,
+  }),
+
   getters: {
     isLoggedIn: (s) => !!s.user,
-    isPremium: (s) => !!s.user?.isPremium
   },
+
   actions: {
-    login(name: string) {
-      this.user = { name, isPremium: false };
-      saveState(this.$state);
+    async hydrate() {
+      if (this.hydrated) return;
+
+      const { data } = await supabase.auth.getSession();
+      this.session = data.session ?? null;
+      this.user = data.session?.user ?? null;
+      this.hydrated = true;
+
+      // sinkron kalau ada perubahan auth (login/logout)
+      supabase.auth.onAuthStateChange((_event, session) => {
+        this.session = session ?? null;
+        this.user = session?.user ?? null;
+      });
+      // event listener ini memang cara standar Supabase untuk memantau state auth.
     },
-    logout() {
+
+    async signUp(email: string, password: string, name?: string) {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: { name: name ?? '' }, // user_metadata
+        },
+      });
+
+      // Jika Confirm email aktif, session biasanya null sampai user verifikasi email.
+      if (error) throw error;
+
+      return data;
+    },
+
+    async signIn(email: string, password: string) {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+      if (error) throw error;
+      this.session = data.session;
+      this.user = data.user;
+      return data;
+    },
+
+    async signOut() {
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
+      this.session = null;
       this.user = null;
-      saveState(this.$state);
+      // signOut akan membersihkan session di storage Supabase client.
     },
-    upgrade() {
-      if (!this.user) return;
-      this.user.isPremium = true;
-      saveState(this.$state);
-    }
-  }
+  },
 });

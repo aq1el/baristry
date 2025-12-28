@@ -73,6 +73,9 @@
           aria-label="Close"
         >
           ✕
+        <p v-if="notice" class="text-center text-sm mt-3" :class="notice.includes('berhasil') ? 'text-green-700' : 'text-red-600'">
+          {{ notice }}
+        </p>
         </button>
       </div>
     </div>
@@ -91,39 +94,68 @@ const router = useRouter();
 
 const username = ref('');
 const password = ref('');
+const remember = ref(false);
 const submitting = ref(false);
-const remember = ref(true);
+const notice = ref<string | null>(null);
+
 const errors = ref<{ username?: string; password?: string }>({});
 
 function validate() {
   errors.value = {};
-  if (!username.value) errors.value.username = 'Username/email wajib diisi.';
+  notice.value = null;
+
+  if (!username.value) errors.value.username = 'Email wajib diisi.';
+  else if (!username.value.includes('@')) errors.value.username = 'Masukkan email yang valid.';
   if (!password.value) errors.value.password = 'Password wajib diisi.';
+  else if (password.value.length < 6) errors.value.password = 'Password minimal 6 karakter.';
+
   return !errors.value.username && !errors.value.password;
 }
 
 async function submit() {
   if (!validate()) return;
-  submitting.value = true;
-  await new Promise(r => setTimeout(r, 400));
 
-  const displayName = username.value.includes('@') ? username.value.split('@')[0] : username.value;
-  auth.login(displayName);
+  submitting.value = true;
+  notice.value = null;
 
   try {
-    localStorage.setItem('baristry_auth_remember', remember.value ? '1' : '0');
-  } catch {}
+    // pastikan auth state ready
+    await auth.hydrate();
 
-  submitting.value = false;
-  const redirect = ui.authModal.redirect || '/';
-  ui.closeAuth();
+    const email = username.value.trim().toLowerCase();
+    const pass = password.value;
 
-  // Guard: only navigate if target differs
-  const current = router.currentRoute.value.fullPath;
-  if (redirect && redirect !== current) {
-    router.push(redirect);
+    if (ui.authModal.mode === 'login') {
+      await auth.signIn(email, pass);
+    } else {
+      // mode signup/register
+      const res = await auth.signUp(email, pass);
+      // kalau Supabase kamu aktifkan Email Confirmation, session bisa null sampai user verifikasi
+      if (!res?.session) {
+        notice.value = 'Akun berhasil dibuat. Silakan cek email untuk verifikasi, lalu login.';
+      }
+    }
+
+    try {
+      localStorage.setItem('baristry_auth_remember', remember.value ? '1' : '0');
+    } catch {}
+
+    // tutup modal dan redirect ke halaman tujuan
+    const redirect = ui.authModal.redirect || '/';
+    ui.closeAuth();
+
+    const current = router.currentRoute.value.fullPath;
+    if (redirect && redirect !== current) {
+      router.push(redirect);
+    }
+  } catch (e: any) {
+    // tampilkan error Supabase
+    notice.value = e?.message || 'Gagal memproses autentikasi.';
+  } finally {
+    submitting.value = false;
   }
 }
+
 function close() {
   ui.closeAuth();
 }
