@@ -17,10 +17,8 @@ import CourseDetailPage from '@/pages/CourseDetailPage.vue';
 import ContactPage from '@/pages/ContactPage.vue';
 import ChatPage from '@/pages/ChatPage.vue';
 
-import LoginPage from '@/pages/LoginPage.vue';
-import SignupPage from '@/pages/SignupPage.vue';
-
 import { useAuthStore } from '@/stores/auth';
+import { useUiStore } from '@/stores/ui';
 
 const router = createRouter({
   history: createWebHistory(),
@@ -42,27 +40,22 @@ const router = createRouter({
 
     { path: '/contact', name: 'contact', component: ContactPage },
 
-    // 🔒 Protected route (harus login)
+    // ✅ Protected route
     { path: '/chat', name: 'chat', component: ChatPage, meta: { requiresAuth: true } },
-
-    // ✅ Auth pages
-    { path: '/login', name: 'login', component: LoginPage },
-    { path: '/signup', name: 'signup', component: SignupPage },
   ],
 });
 
-/**
- * ✅ Router Guard: kalau route butuh auth, tapi user belum login -> lempar ke /login
- * dan simpan tujuan awal di query redirect
- */
+// ✅ Guard: buka modal login kalau user belum login
 router.beforeEach(async (to) => {
   const auth = useAuthStore();
+  const ui = useUiStore();
 
-  // pastikan session Supabase sudah ke-load (hydrate)
   await auth.hydrate();
 
   if (to.meta.requiresAuth && !auth.isLoggedIn) {
-    return { name: 'login', query: { redirect: to.fullPath } };
+    // buka modal login, simpan tujuan supaya setelah login bisa lanjut
+    ui.openLogin(to.fullPath);
+    return false; // batalkan navigasi
   }
 });
 
