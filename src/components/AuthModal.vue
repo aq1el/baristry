@@ -4,78 +4,100 @@
       v-if="ui.authModal.open"
       class="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
       @click.self="close"
-      @keydown.esc="close"
     >
-      <div class="bg-white rounded-2xl shadow-xl w-[92%] max-w-md p-6 relative">
+      <div
+        class="bg-white rounded-2xl shadow-xl w-[92%] max-w-md p-6 relative outline-none"
+        tabindex="0"
+        @keydown.esc="close"
+      >
         <div class="flex flex-col items-center mb-4">
           <div class="w-14 h-14 rounded-full bg-[#8B4D20] flex items-center justify-center text-white text-2xl">☕</div>
           <div class="mt-2 text-stone-800 font-medium">BarisTry</div>
         </div>
 
-        <h2 class="text-3xl font-bold text-center mb-6">
+        <h2 class="text-3xl font-bold text-center mb-2">
           {{ ui.authModal.mode === 'login' ? 'Login' : 'Sign Up' }}
         </h2>
+        <p class="text-center text-stone-600 text-sm mb-6">
+          {{ ui.authModal.mode === 'login' ? 'Masuk untuk melanjutkan belajar.' : 'Buat akun baru untuk mulai belajar.' }}
+        </p>
 
         <form class="space-y-4" @submit.prevent="submit">
-          <div>
-            <label class="block text-sm mb-1">username or email</label>
-            <div class="bg-[#8B4D20] rounded-full p-2">
-              <input
-                v-model.trim="username"
-                type="text"
-                class="w-full rounded-full px-4 py-2 outline-none"
-                placeholder="Please enter your username"
-              />
-            </div>
-            <p v-if="errors.username" class="text-red-600 text-sm mt-1">{{ errors.username }}</p>
+          <!-- Nama (hanya register) -->
+          <div v-if="ui.authModal.mode === 'register'">
+            <label class="block text-sm font-medium text-stone-700">Nama</label>
+            <input
+              v-model="name"
+              type="text"
+              class="mt-1 w-full rounded-xl border border-stone-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#8B4D20]/40"
+              placeholder="Nama lengkap"
+              autocomplete="name"
+            />
+            <p v-if="errors.name" class="mt-1 text-xs text-red-600">{{ errors.name }}</p>
           </div>
 
+          <!-- Email -->
           <div>
-            <label class="block text-sm mb-1">password</label>
-            <div class="bg-[#8B4D20] rounded-full p-2">
-              <input
-                v-model.trim="password"
-                type="password"
-                class="w-full rounded-full px-4 py-2 outline-none"
-                placeholder="Please enter your password"
-              />
-            </div>
-            <p v-if="errors.password" class="text-red-600 text-sm mt-1">{{ errors.password }}</p>
+            <label class="block text-sm font-medium text-stone-700">Email</label>
+            <input
+              v-model="email"
+              type="email"
+              class="mt-1 w-full rounded-xl border border-stone-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#8B4D20]/40"
+              placeholder="contoh@email.com"
+              autocomplete="email"
+            />
+            <p v-if="errors.email" class="mt-1 text-xs text-red-600">{{ errors.email }}</p>
           </div>
 
-          <label class="flex items-center gap-2 text-sm text-stone-700">
-            <input type="checkbox" v-model="remember" />
-            Remember me
-          </label>
+          <!-- Password -->
+          <div>
+            <label class="block text-sm font-medium text-stone-700">Password</label>
+            <input
+              v-model="password"
+              type="password"
+              class="mt-1 w-full rounded-xl border border-stone-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#8B4D20]/40"
+              placeholder="Minimal 6 karakter"
+              :autocomplete="ui.authModal.mode === 'login' ? 'current-password' : 'new-password'"
+            />
+            <p v-if="errors.password" class="mt-1 text-xs text-red-600">{{ errors.password }}</p>
+          </div>
+
+          <!-- Notice error/success -->
+          <p v-if="notice" class="text-center text-sm" :class="noticeType === 'ok' ? 'text-green-700' : 'text-red-600'">
+            {{ notice }}
+          </p>
 
           <button
-            class="w-full mt-2 px-4 py-2 rounded-full bg-[#8B4D20] text-white hover:brightness-95 disabled:opacity-60"
+            type="submit"
             :disabled="submitting"
+            class="w-full rounded-xl bg-[#8B4D20] px-4 py-2 text-sm font-semibold text-white hover:opacity-95 disabled:opacity-60"
           >
-            {{ submitting ? 'Processing...' : (ui.authModal.mode === 'login' ? 'Login' : 'Sign Up') }}
+            {{ submitting ? 'Memproses...' : (ui.authModal.mode === 'login' ? 'Login' : 'Buat Akun') }}
           </button>
         </form>
 
-        <p class="mt-3 text-center text-stone-700">
-          <template v-if="ui.authModal.mode === 'login'">
-            Don’t have an account?
-            <button class="text-blue-600 underline" @click="ui.openRegister(ui.authModal.redirect || undefined)">Sign up</button>
-          </template>
-          <template v-else>
-            Already have an account?
-            <button class="text-blue-600 underline" @click="ui.openLogin(ui.authModal.redirect || undefined)">Login</button>
-          </template>
-        </p>
+        <div class="mt-5 text-center text-sm text-stone-700">
+          <span v-if="ui.authModal.mode === 'login'">
+            Belum punya akun?
+            <button class="font-semibold text-[#8B4D20] hover:underline" type="button" @click="ui.switchMode()">
+              Sign Up
+            </button>
+          </span>
+          <span v-else>
+            Sudah punya akun?
+            <button class="font-semibold text-[#8B4D20] hover:underline" type="button" @click="ui.switchMode()">
+              Login
+            </button>
+          </span>
+        </div>
 
         <button
-          class="absolute top-3 right-3 text-stone-500 hover:text-stone-700"
+          class="absolute top-3 right-3 w-9 h-9 rounded-full hover:bg-stone-100 flex items-center justify-center text-stone-700"
           @click="close"
           aria-label="Close"
+          type="button"
         >
           ✕
-        <p v-if="notice" class="text-center text-sm mt-3" :class="notice.includes('berhasil') ? 'text-green-700' : 'text-red-600'">
-          {{ notice }}
-        </p>
         </button>
       </div>
     </div>
@@ -83,33 +105,61 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { reactive, ref, watch } from 'vue';
+import { useRouter } from 'vue-router';
 import { useUiStore } from '@/stores/ui';
 import { useAuthStore } from '@/stores/auth';
-import { useRouter } from 'vue-router';
 
 const ui = useUiStore();
 const auth = useAuthStore();
 const router = useRouter();
 
-const username = ref('');
+const name = ref('');
+const email = ref('');
 const password = ref('');
-const remember = ref(false);
 const submitting = ref(false);
-const notice = ref<string | null>(null);
 
-const errors = ref<{ username?: string; password?: string }>({});
+const notice = ref<string | null>(null);
+const noticeType = ref<'ok' | 'err'>('err');
+
+const errors = reactive<{ name?: string; email?: string; password?: string }>({});
+
+function resetForm() {
+  name.value = '';
+  email.value = '';
+  password.value = '';
+  notice.value = null;
+  noticeType.value = 'err';
+  errors.name = undefined;
+  errors.email = undefined;
+  errors.password = undefined;
+}
+
+// reset setiap modal dibuka
+watch(
+  () => ui.authModal.open,
+  (open) => {
+    if (open) resetForm();
+  }
+);
 
 function validate() {
-  errors.value = {};
-  notice.value = null;
+  errors.name = undefined;
+  errors.email = undefined;
+  errors.password = undefined;
 
-  if (!username.value) errors.value.username = 'Email wajib diisi.';
-  else if (!username.value.includes('@')) errors.value.username = 'Masukkan email yang valid.';
-  if (!password.value) errors.value.password = 'Password wajib diisi.';
-  else if (password.value.length < 6) errors.value.password = 'Password minimal 6 karakter.';
+  if (ui.authModal.mode === 'register') {
+    if (!name.value.trim()) errors.name = 'Nama wajib diisi.';
+  }
 
-  return !errors.value.username && !errors.value.password;
+  const e = email.value.trim().toLowerCase();
+  if (!e) errors.email = 'Email wajib diisi.';
+  else if (!e.includes('@')) errors.email = 'Email tidak valid.';
+
+  if (!password.value) errors.password = 'Password wajib diisi.';
+  else if (password.value.length < 6) errors.password = 'Password minimal 6 karakter.';
+
+  return !errors.name && !errors.email && !errors.password;
 }
 
 async function submit() {
@@ -117,30 +167,30 @@ async function submit() {
 
   submitting.value = true;
   notice.value = null;
+  noticeType.value = 'err';
 
   try {
-    // pastikan auth state ready
     await auth.hydrate();
 
-    const email = username.value.trim().toLowerCase();
-    const pass = password.value;
+    const e = email.value.trim().toLowerCase();
+    const p = password.value;
 
     if (ui.authModal.mode === 'login') {
-      await auth.signIn(email, pass);
+      await auth.signIn(e, p);
+      notice.value = 'Login berhasil.';
+      noticeType.value = 'ok';
     } else {
-      // mode signup/register
-      const res = await auth.signUp(email, pass);
-      // kalau Supabase kamu aktifkan Email Confirmation, session bisa null sampai user verifikasi
+      const res = await auth.signUp(e, p, name.value.trim());
+      // Kalau email confirmation aktif, session bisa null sampai verifikasi
       if (!res?.session) {
-        notice.value = 'Akun berhasil dibuat. Silakan cek email untuk verifikasi, lalu login.';
+        notice.value = 'Akun dibuat. Cek email untuk verifikasi, lalu login.';
+        noticeType.value = 'ok';
+        return; // jangan auto close dulu
       }
+      notice.value = 'Akun berhasil dibuat.';
+      noticeType.value = 'ok';
     }
 
-    try {
-      localStorage.setItem('baristry_auth_remember', remember.value ? '1' : '0');
-    } catch {}
-
-    // tutup modal dan redirect ke halaman tujuan
     const redirect = ui.authModal.redirect || '/';
     ui.closeAuth();
 
@@ -149,8 +199,8 @@ async function submit() {
       router.push(redirect);
     }
   } catch (e: any) {
-    // tampilkan error Supabase
     notice.value = e?.message || 'Gagal memproses autentikasi.';
+    noticeType.value = 'err';
   } finally {
     submitting.value = false;
   }

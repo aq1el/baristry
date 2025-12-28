@@ -17,21 +17,24 @@
         </li>
 
         <li class="ml-2 h-5 w-px bg-stone-300" />
-        <template v-if="auth.isLoggedIn">
+        <template v-if="!auth.isLoggedIn">
+          <li><button class="text-sm underline text-stone-600" @click="ui.openLogin()">Login</button></li>
+          <li><button class="text-sm underline text-stone-600" @click="ui.openRegister()">Sign Up</button></li>
+        </template>
+        <template v-else>
           <li class="text-sm text-stone-700">
-            Hi, <span class="font-medium">{{ auth.user?.name }}</span>
+            Hi, <span class="font-medium">{{ auth.profile?.name || auth.user?.email }}</span>
             <span class="ml-2 px-2 py-0.5 rounded text-xs" :class="auth.isPremium ? 'bg-amber-200 text-amber-900' : 'bg-stone-200 text-stone-700'">
               {{ auth.isPremium ? 'Premium' : 'Free' }}
+              <span v-if="auth.isPremium" class="badge-premium">⭐ Premium </span>
+              <button v-else class="px-3 py-1 rounded bg-amber-500 text-white hover:bg-amber-600 text-sm" @click="openUpgrade"> Upgrade Premium </button>
+                <button class="text-sm underline text-stone-600" @click="auth.signOut()">Logout</button>
             </span>
           </li>
           <li v-if="!auth.isPremium">
             <button class="px-3 py-1 rounded bg-amber-500 text-white hover:bg-amber-600 text-sm" @click="onUpgrade">Upgrade</button>
           </li>
-          <li><button class="text-sm underline text-stone-600" @click="auth.logout()">Logout</button></li>
-        </template>
-        <template v-else>
-          <li><button class="text-sm underline text-stone-600" @click="openLogin()">Login</button></li>
-          <li><button class="text-sm underline text-stone-600" @click="openRegister()">Sign Up</button></li>
+          <li><button class="text-sm underline text-stone-600" @click="auth.signOut()">Logout</button></li>
         </template>
       </ul>
     </nav>

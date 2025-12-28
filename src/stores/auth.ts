@@ -2,9 +2,16 @@ import { defineStore } from 'pinia';
 import { supabase } from '@/lib/supabase';
 import type { Session, User } from '@supabase/supabase-js';
 
+type Profile = {
+  id: string;
+  name: string | null;
+  role: 'free' | 'premium' | 'admin';
+};
+
 type AuthState = {
   session: Session | null;
   user: User | null;
+  profile: Profile | null;
   hydrated: boolean;
 };
 
@@ -12,11 +19,14 @@ export const useAuthStore = defineStore('auth', {
   state: (): AuthState => ({
     session: null,
     user: null,
+    profile: null,
     hydrated: false,
   }),
 
   getters: {
     isLoggedIn: (s) => !!s.user,
+    isPremium: (s) => s.profile?.role === 'premium' || s.profile?.role === 'admin',
+    isAdmin: (s) => s.profile?.role === 'admin',
   },
 
   actions: {
@@ -26,29 +36,40 @@ export const useAuthStore = defineStore('auth', {
       const { data } = await supabase.auth.getSession();
       this.session = data.session ?? null;
       this.user = data.session?.user ?? null;
-      this.hydrated = true;
 
-      // sinkron kalau ada perubahan auth (login/logout)
-      supabase.auth.onAuthStateChange((_event, session) => {
+      if (this.user) {
+        await this.fetchProfile();
+      }
+
+      supabase.auth.onAuthStateChange(async (_event, session) => {
         this.session = session ?? null;
         this.user = session?.user ?? null;
+        this.profile = null;
+
+        if (this.user) {
+          await this.fetchProfile();
+        }
       });
-      // event listener ini memang cara standar Supabase untuk memantau state auth.
+
+      this.hydrated = true;
     },
 
-    async signUp(email: string, password: string, name?: string) {
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: { name: name ?? '' }, // user_metadata
-        },
-      });
+    async fetchProfile() {
+      if (!this.user) return;
 
-      // Jika Confirm email aktif, session biasanya null sampai user verifikasi email.
-      if (error) throw error;
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('id, name, role')
+        .eq('id', this.user.id)
+        .single();
 
-      return data;
+      if (error) {
+        console.error('Failed to load profile:', error.message);
+        this.profile = null;
+        return;
+      }
+
+      this.profile = data;
     },
 
     async signIn(email: string, password: string) {
@@ -57,17 +78,29 @@ export const useAuthStore = defineStore('auth', {
         password,
       });
       if (error) throw error;
+
       this.session = data.session;
       this.user = data.user;
+      await this.fetchProfile();
+    },
+
+    async signUp(email: string, password: string, name?: string) {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: { data: { name: name ?? '' } },
+      });
+      if (error) throw error;
+
+      // profile akan dibuat otomatis oleh trigger
       return data;
     },
 
     async signOut() {
-      const { error } = await supabase.auth.signOut();
-      if (error) throw error;
+      await supabase.auth.signOut();
       this.session = null;
       this.user = null;
-      // signOut akan membersihkan session di storage Supabase client.
+      this.profile = null;
     },
   },
 });

@@ -40,22 +40,23 @@ const router = createRouter({
 
     { path: '/contact', name: 'contact', component: ContactPage },
 
-    // ✅ Protected route
     { path: '/chat', name: 'chat', component: ChatPage, meta: { requiresAuth: true } },
   ],
 });
 
-// ✅ Guard: buka modal login kalau user belum login
 router.beforeEach(async (to) => {
   const auth = useAuthStore();
   const ui = useUiStore();
-
   await auth.hydrate();
 
   if (to.meta.requiresAuth && !auth.isLoggedIn) {
-    // buka modal login, simpan tujuan supaya setelah login bisa lanjut
     ui.openLogin(to.fullPath);
-    return false; // batalkan navigasi
+    return false;
+  }
+
+  if (to.meta.requiresPremium && !auth.isPremium) {
+    alert('Fitur ini hanya untuk pengguna Premium.');
+    return false;
   }
 });
 

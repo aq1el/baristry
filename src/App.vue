@@ -13,4 +13,12 @@
 import BaseNavbar from '@/components/BaseNavbar.vue';
 import BaseFooter from '@/components/BaseFooter.vue';
 import AuthModal from '@/components/AuthModal.vue';
+import { onMounted } from 'vue';
+import { useAuthStore } from '@/stores/auth';
+
+const auth = useAuthStore();
+
+onMounted(() => {
+  auth.hydrate();
+});
 </script>
