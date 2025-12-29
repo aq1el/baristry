@@ -27,7 +27,7 @@
             <span class="ml-2 px-2 py-0.5 rounded text-xs" :class="auth.isPremium ? 'bg-amber-200 text-amber-900' : 'bg-stone-200 text-stone-700'">
               {{ auth.isPremium ? 'Premium' : 'Free' }}
               <span v-if="auth.isPremium" class="badge-premium">⭐ Premium </span>
-              <button v-else class="px-3 py-1 rounded bg-amber-500 text-white hover:bg-amber-600 text-sm" @click="openUpgrade"> Upgrade Premium </button>
+              <button v-else class="px-3 py-1 rounded bg-amber-500 text-white hover:bg-amber-600 text-sm" @click="onUpgrade"> Upgrade Premium </button>
                 <button class="text-sm underline text-stone-600" @click="auth.signOut()">Logout</button>
             </span>
           </li>
@@ -61,6 +61,7 @@ function onUpgrade() {
     ui.openLogin(router.currentRoute.value.fullPath);
     return;
   }
-  auth.upgrade();
+  router.push('/pricing'); 
 }
+
 </script>

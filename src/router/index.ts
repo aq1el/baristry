@@ -17,6 +17,8 @@ import CourseDetailPage from '@/pages/CourseDetailPage.vue';
 import ContactPage from '@/pages/ContactPage.vue';
 import ChatPage from '@/pages/ChatPage.vue';
 
+import PricingPage from '@/pages/PricingPage.vue';
+
 import { useAuthStore } from '@/stores/auth';
 import { useUiStore } from '@/stores/ui';
 
@@ -41,23 +43,25 @@ const router = createRouter({
     { path: '/contact', name: 'contact', component: ContactPage },
 
     { path: '/chat', name: 'chat', component: ChatPage, meta: { requiresAuth: true } },
+    
+    { path: '/pricing', name: 'pricing', component: PricingPage, meta: { requiresAuth: true } },
   ],
 });
 
 router.beforeEach(async (to) => {
+  if (!to.meta.requiresAuth) return true;
+
   const auth = useAuthStore();
   const ui = useUiStore();
+
   await auth.hydrate();
 
-  if (to.meta.requiresAuth && !auth.isLoggedIn) {
-    ui.openLogin(to.fullPath);
-    return false;
+  if (!auth.isLoggedIn) {
+    ui.openLogin(to.fullPath); 
+    return false;              
   }
 
-  if (to.meta.requiresPremium && !auth.isPremium) {
-    alert('Fitur ini hanya untuk pengguna Premium.');
-    return false;
-  }
+  return true;
 });
 
 export default router;

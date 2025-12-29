@@ -183,8 +183,9 @@ async function submit() {
       const res = await auth.signUp(e, p, name.value.trim());
       // Kalau email confirmation aktif, session bisa null sampai verifikasi
       if (!res?.session) {
-        notice.value = 'Akun dibuat. Cek email untuk verifikasi, lalu login.';
+        notice.value = 'Akun berhasil dibuat. Silakan cek email untuk verifikasi, lalu login.';
         noticeType.value = 'ok';
+        submitting.value = false;
         return; // jangan auto close dulu
       }
       notice.value = 'Akun berhasil dibuat.';
